@@ -1,29 +1,33 @@
-import { getRepository, getCustomRepository } from 'typeorm';
-import AppError from '../errors/AppError';
+import { getRepository } from 'typeorm';
+import AppError from '@shared/errors/AppError';
+import { injectable, inject } from 'tsyringe';
 
-import Transaction from '../models/Transaction';
-import Category from '../models/Category';
-import TransactionsRepository from '../repositories/TransactionsRepository';
+import Transaction from '@modules/transactions/infra/typeorm/entities/Transaction';
+import ITransactionsRepository from '@modules/transactions/repositories/ITransactionsRepository';
+import Category from '../../categories/infra/typeorm/entities/Category';
 
-interface Request {
+interface IRequest {
   title: string;
   type: 'income' | 'outcome';
   value: number;
   categoryTitle: string;
 }
-
+@injectable()
 class CreateTransactionService {
+  constructor(
+    @inject('TransactionsRepository')
+    private transactionsRepository: ITransactionsRepository,
+  ) {}
+
   public async execute({
     title,
     type,
     value,
     categoryTitle,
-  }: Request): Promise<Transaction | null> {
-    const transactionsRepository = getCustomRepository(TransactionsRepository);
-
+  }: IRequest): Promise<Transaction | null> {
     const categoryRepository = getRepository(Category);
 
-    const { total } = await transactionsRepository.getBalance();
+    const { total } = await this.transactionsRepository.getBalance();
 
     if (!['income', 'outcome'].includes(type)) {
       throw new Error('Transaction type is invalid');
@@ -42,15 +46,13 @@ class CreateTransactionService {
         where: { title: categoryTitle },
       });
 
-      const transaction = transactionsRepository.create({
+      const transaction = this.transactionsRepository.create({
         title,
         type,
         value,
         category_id: categoryAll[0].id,
         category: categoryAll[0],
       });
-
-      await transactionsRepository.save(transaction);
 
       return transaction;
     }
@@ -62,16 +64,13 @@ class CreateTransactionService {
     await categoryRepository.save(category);
 
     const category_id = category.id;
-    const transaction = transactionsRepository.create({
+    const transaction = this.transactionsRepository.create({
       title,
       type,
       value,
       category_id,
       category,
     });
-
-    await transactionsRepository.save(transaction);
-
     return transaction;
   }
 }

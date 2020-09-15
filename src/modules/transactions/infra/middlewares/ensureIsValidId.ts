@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { getCustomRepository } from 'typeorm';
-import TransactionsRepository from '../repositories/TransactionsRepository';
+import TransactionsRepository from '@modules/transactions/infra/typeorm/repositories/TransactionsRepository';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export default async function ensureIsValidId(

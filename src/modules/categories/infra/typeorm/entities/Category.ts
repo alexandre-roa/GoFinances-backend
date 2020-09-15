@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
-import Transaction from './Transaction';
+import Transaction from '@modules/transactions/infra/typeorm/entities/Transaction';
 
 @Entity('categories')
 class Category {

@@ -1,11 +1,11 @@
 import csvParse from 'csv-parse';
 import fs from 'fs';
 import { getRepository, In, getCustomRepository } from 'typeorm';
-import Transaction from '../models/Transaction';
-import TransactionsRepository from '../repositories/TransactionsRepository';
-import Category from '../models/Category';
+import Transaction from '@modules/transactions/infra/typeorm/entities/Transaction';
+import TransactionsRepository from '../infra/typeorm/repositories/TransactionsRepository';
+import Category from '../../categories/infra/typeorm/entities/Category';
 
-interface CSVTransactions {
+interface ICSVTransactions {
   title: string;
   type: 'income' | 'outcome';
   value: number;
@@ -27,7 +27,7 @@ class ImportTransactionsService {
 
     const parseCSV = readCSVStream.pipe(parseStream);
 
-    const transactions: CSVTransactions[] = [];
+    const transactions: ICSVTransactions[] = [];
     const categories: string[] = [];
 
     parseCSV.on('data', async line => {
