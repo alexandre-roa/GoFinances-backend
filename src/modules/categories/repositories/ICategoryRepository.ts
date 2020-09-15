@@ -1,7 +1,7 @@
 import Category from '@modules/categories/infra/typeorm/entities/Category';
 
-export default interface ITransactionsRepository {
+export default interface ICategoryRepository {
   create(categoryTitle: string): Promise<Category>;
-  // findCategoryTitle(categoryTitle: string): Promise<Category | undefined>;
-  // findAllCategories(categoryTitle: string): Promise<Category[]>;
+  findId(category_id: string | undefined): Promise<Category | undefined>;
+  findOne(categoryTitle: string): Promise<Category | undefined>;
 }

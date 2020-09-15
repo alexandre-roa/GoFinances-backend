@@ -1,16 +1,16 @@
-import { getRepository } from 'typeorm';
+import CategoryRepository from '@modules/categories/infra/typeorm/repositories/CategoriesRepository';
 import AppError from '@shared/errors/AppError';
 import { injectable, inject } from 'tsyringe';
 
 import Transaction from '@modules/transactions/infra/typeorm/entities/Transaction';
 import ITransactionsRepository from '@modules/transactions/repositories/ITransactionsRepository';
-import Category from '../../categories/infra/typeorm/entities/Category';
+import GetCategoryService from '@modules/categories/services/GetCategoryService';
 
 interface IRequest {
   title: string;
   type: 'income' | 'outcome';
   value: number;
-  categoryTitle: string;
+  category_id: string;
 }
 @injectable()
 class CreateTransactionService {
@@ -23,10 +23,8 @@ class CreateTransactionService {
     title,
     type,
     value,
-    categoryTitle,
+    category_id,
   }: IRequest): Promise<Transaction | null> {
-    const categoryRepository = getRepository(Category);
-
     const { total } = await this.transactionsRepository.getBalance();
 
     if (!['income', 'outcome'].includes(type)) {
@@ -37,33 +35,12 @@ class CreateTransactionService {
       throw new AppError('You do not have enough balance', 400);
     }
 
-    const checkCategoryExists = await categoryRepository.findOne({
-      where: { title: categoryTitle },
-    });
+    const categoryRepository = new CategoryRepository();
 
-    if (checkCategoryExists) {
-      const categoryAll = await categoryRepository.find({
-        where: { title: categoryTitle },
-      });
+    const getCategory = new GetCategoryService(categoryRepository);
 
-      const transaction = this.transactionsRepository.create({
-        title,
-        type,
-        value,
-        category_id: categoryAll[0].id,
-        category: categoryAll[0],
-      });
+    const category = await getCategory.execute({ category_id });
 
-      return transaction;
-    }
-
-    const category = categoryRepository.create({
-      title: categoryTitle,
-    });
-
-    await categoryRepository.save(category);
-
-    const category_id = category.id;
     const transaction = this.transactionsRepository.create({
       title,
       type,
@@ -71,6 +48,7 @@ class CreateTransactionService {
       category_id,
       category,
     });
+
     return transaction;
   }
 }

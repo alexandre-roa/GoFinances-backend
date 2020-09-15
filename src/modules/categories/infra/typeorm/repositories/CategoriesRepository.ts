@@ -21,6 +21,20 @@ class CategoriesRepository implements ICategoryRepository {
 
     return category;
   }
+
+  public async findId(category_id: string): Promise<Category | undefined> {
+    const category = await this.ormRepository.find({ id: category_id });
+
+    return category[0];
+  }
+
+  public async findOne(categoryTitle: string): Promise<Category | undefined> {
+    const checkCategoryExist = this.ormRepository.findOne({
+      where: { title: categoryTitle },
+    });
+
+    return checkCategoryExist;
+  }
 }
 
 export default CategoriesRepository;

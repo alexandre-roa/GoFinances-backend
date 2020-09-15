@@ -22,7 +22,7 @@ const transactionsController = new TransactionsController();
 //   response.json({ transactions, balance });
 // });
 
-transactionsRouter.post('/', transactionsController.create);
+transactionsRouter.post('/:category_id', transactionsController.create);
 
 transactionsRouter.delete(
   '/:id',

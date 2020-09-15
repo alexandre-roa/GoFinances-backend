@@ -66,10 +66,10 @@ class TransactionsRepository implements ITransactionsRepository {
   }
 
   public async all(): Promise<IGetTransactionsDTO[]> {
-    const categotyRepository = getRepository(Category);
+    const categoryRepository = getRepository(Category);
 
     const transaction = await this.ormRepository.find();
-    const category = await categotyRepository.find();
+    const category = await categoryRepository.find();
 
     const transactions = transaction.map(item => {
       return {

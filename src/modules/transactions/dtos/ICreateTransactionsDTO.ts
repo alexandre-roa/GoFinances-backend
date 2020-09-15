@@ -5,5 +5,5 @@ export default interface ICreateTransactionsDTO {
   type: 'income' | 'outcome';
   value: number;
   category_id: string;
-  category: Category;
+  category: Category | undefined;
 }
