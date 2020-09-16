@@ -4,17 +4,18 @@ import multer from 'multer';
 
 import DeleteTransactionService from '@modules/transactions/services/DeleteTransactionService';
 import uploadConfig from '@config/upload';
-import ImportTransactionsService from '@modules/transactions/services/ImportTransactionsService';
 import ensureIsValidId from '@modules/transactions/infra/middlewares/ensureIsValidId';
 import TransactionsController from '../controllers/TransactionsController';
+import ImportTransactionsController from '../controllers/ImportTransactionsController';
 
 const transactionsRouter = Router();
 const upload = multer(uploadConfig);
 const transactionsController = new TransactionsController();
+const importTransactionsController = new ImportTransactionsController();
 
 transactionsRouter.get('/', transactionsController.index);
 
-transactionsRouter.post('/:category_id', transactionsController.create);
+transactionsRouter.post('/create/:category_id', transactionsController.create);
 
 transactionsRouter.delete(
   '/:id',
@@ -32,13 +33,7 @@ transactionsRouter.delete(
 transactionsRouter.post(
   '/import',
   upload.single('file'),
-  async (request, response) => {
-    const importTransaction = new ImportTransactionsService();
-
-    const transactions = await importTransaction.execute(request.file.path);
-
-    response.json(transactions);
-  },
+  importTransactionsController.create,
 );
 
 export default transactionsRouter;
