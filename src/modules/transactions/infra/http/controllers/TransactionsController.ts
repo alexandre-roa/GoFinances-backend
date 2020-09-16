@@ -28,8 +28,9 @@ export default class TransactionsController {
     const getTransactions = container.resolve(GetTransactionService);
 
     const transactions = await getTransactions.execute();
+    const balance = await getTransactions.balance();
 
-    return response.json(transactions);
+    return response.json({ transactions, balance });
   }
 
   public async delete(request: Request, response: Response): Promise<void> {
