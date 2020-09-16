@@ -1,10 +1,8 @@
 import { EntityRepository, Repository, getRepository } from 'typeorm';
 
 import Transaction from '@modules/transactions/infra/typeorm/entities/Transaction';
-import Category from '@modules/categories/infra/typeorm/entities/Category';
 
 import ITransactionsRepository from '@modules/transactions/repositories/ITransactionsRepository';
-import IGetTransactionsDTO from '@modules/transactions/dtos/IGetTransactionsDTO';
 import IBalance from '@modules/transactions/dtos/IBalanceDTO';
 import ICreateTransactionsDTO from '@modules/transactions/dtos/ICreateTransactionsDTO';
 
@@ -65,25 +63,10 @@ class TransactionsRepository implements ITransactionsRepository {
     return transaction;
   }
 
-  public async all(): Promise<IGetTransactionsDTO[]> {
-    const categoryRepository = getRepository(Category);
-
+  public async all(): Promise<Transaction[]> {
     const transaction = await this.ormRepository.find();
-    const category = await categoryRepository.find();
 
-    const transactions = transaction.map(item => {
-      return {
-        id: item.id,
-        title: item.title,
-        value: item.value,
-        type: item.type,
-        category: category.find(cat => cat.id === item.category_id),
-        created_at: item.created_at,
-        updated_at: item.updated_at,
-      };
-    });
-
-    return transactions;
+    return transaction;
   }
 }
 

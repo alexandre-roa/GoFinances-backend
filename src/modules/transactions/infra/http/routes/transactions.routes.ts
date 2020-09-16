@@ -12,15 +12,7 @@ const transactionsRouter = Router();
 const upload = multer(uploadConfig);
 const transactionsController = new TransactionsController();
 
-// transactionsRouter.get('/', async (request, response) => {
-//   const transactionsRepository = getCustomRepository(TransactionsRepository);
-//   const balancerepository = new TransactionsRepository();
-
-//   const balance = await balancerepository.getBalance();
-
-//   const transactions = await transactionsRepository.all();
-//   response.json({ transactions, balance });
-// });
+transactionsRouter.get('/', transactionsController.index);
 
 transactionsRouter.post('/:category_id', transactionsController.create);
 
