@@ -12,6 +12,6 @@ container.registerSingleton<ITransactionsRepository>(
 );
 
 container.registerSingleton<ICategoryRepository>(
-  'CategoryRepository',
+  'CategoriesRepository',
   CategoryRepository,
 );

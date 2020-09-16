@@ -10,7 +10,7 @@ interface IRequest {
 @injectable()
 class CreateCategoryService {
   constructor(
-    @inject('CategoryRepository')
+    @inject('CategoriesRepository')
     private categoryRepository: ICategoryRepository,
   ) {}
 
