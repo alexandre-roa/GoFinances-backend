@@ -5,5 +5,6 @@ import ICreateTransactionsDTO from '../dtos/ICreateTransactionsDTO';
 export default interface ITransactionsRepository {
   create(data: ICreateTransactionsDTO): Promise<Transaction>;
   getBalance(): Promise<IBalanceDTO>;
-  all(): Promise<Transaction[]>;
+  find(): Promise<Transaction[]>;
+  import(csvFIle: string): Promise<Transaction[]>;
 }

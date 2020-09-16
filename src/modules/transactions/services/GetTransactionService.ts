@@ -9,8 +9,8 @@ class GetTransactionService {
     private transactionsRepository: ITransactionsRepository,
   ) {}
 
-  public async find(): Promise<Transaction[]> {
-    const transactions = await this.transactionsRepository.all();
+  public async execute(): Promise<Transaction[]> {
+    const transactions = await this.transactionsRepository.find();
 
     return transactions;
   }

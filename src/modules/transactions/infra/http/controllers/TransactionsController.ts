@@ -26,7 +26,7 @@ export default class TransactionsController {
   public async index(request: Request, response: Response): Promise<Response> {
     const getTransactions = container.resolve(GetTransactionService);
 
-    const transactions = await getTransactions.find();
+    const transactions = await getTransactions.execute();
 
     return response.json(transactions);
   }
