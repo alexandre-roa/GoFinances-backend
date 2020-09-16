@@ -35,6 +35,12 @@ class CategoriesRepository implements ICategoryRepository {
 
     return checkCategoryExist;
   }
+
+  public async find(): Promise<Category[] | undefined> {
+    const categories = this.ormRepository.find();
+
+    return categories;
+  }
 }
 
 export default CategoriesRepository;

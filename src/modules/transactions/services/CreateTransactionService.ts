@@ -39,7 +39,7 @@ class CreateTransactionService {
 
     const getCategory = new GetCategoryService(categoryRepository);
 
-    const category = await getCategory.execute({ category_id });
+    const category = await getCategory.findById({ category_id });
 
     const transaction = this.transactionsRepository.create({
       title,
