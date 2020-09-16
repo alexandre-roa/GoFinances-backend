@@ -30,6 +30,8 @@ export default class CategoriesController {
 
     await categories.delete(category_id);
 
-    return response.json({ delete: 'ok' });
+    return response.json({
+      delete: 'Deleted all transactions with this category',
+    });
   }
 }

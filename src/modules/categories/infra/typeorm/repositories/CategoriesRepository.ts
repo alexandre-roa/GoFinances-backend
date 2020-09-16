@@ -1,5 +1,6 @@
 import { EntityRepository, Repository, getRepository } from 'typeorm';
 
+import TransactionsRepository from '@modules/transactions/infra/typeorm/repositories/TransactionsRepository';
 import Category from '@modules/categories/infra/typeorm/entities/Category';
 
 import ICategoryRepository from '@modules/categories/repositories/ICategoryRepository';
@@ -44,6 +45,16 @@ class CategoriesRepository implements ICategoryRepository {
 
   public async delete(category_id: string): Promise<void> {
     await this.ormRepository.find();
+
+    const transactionsRepository = new TransactionsRepository();
+
+    const transactions = await transactionsRepository.find();
+
+    const filteredIds = transactions
+      .filter(transaction => transaction.category_id === category_id)
+      .map(filtered => filtered.id);
+
+    await transactionsRepository.delete(filteredIds);
     await this.ormRepository.delete(category_id);
   }
 }

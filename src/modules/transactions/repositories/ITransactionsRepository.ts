@@ -7,5 +7,5 @@ export default interface ITransactionsRepository {
   getBalance(): Promise<IBalanceDTO>;
   find(): Promise<Transaction[]>;
   import(csvFIle: string): Promise<Transaction[]>;
-  delete(id: string): Promise<void>;
+  delete(ids: Array<string>): Promise<void>;
 }

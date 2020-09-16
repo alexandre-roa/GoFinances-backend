@@ -9,8 +9,8 @@ const categoriesController = new CategoriesController();
 
 categoriesRouter.get('/', categoriesController.index);
 
-categoriesRouter.post('/', categoriesController.create);
+categoriesRouter.post('/create', categoriesController.create);
 
-categoriesRouter.delete('/:category_id', categoriesController.delete);
+categoriesRouter.delete('/delete/:category_id', categoriesController.delete);
 
 export default categoriesRouter;
