@@ -5,6 +5,7 @@ import { container } from 'tsyringe';
 
 import CreateTransactionService from '@modules/transactions/services/CreateTransactionService';
 import GetTransactionService from '@modules/transactions/services/GetTransactionService';
+import DeleteTransactionService from '@modules/transactions/services/DeleteTransactionService';
 
 export default class TransactionsController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -29,5 +30,15 @@ export default class TransactionsController {
     const transactions = await getTransactions.execute();
 
     return response.json(transactions);
+  }
+
+  public async delete(request: Request, response: Response): Promise<void> {
+    const { id } = request.params;
+
+    const deleteTransaction = container.resolve(DeleteTransactionService);
+
+    await deleteTransaction.execute(id);
+
+    response.status(200).json({ message: 'Transaction deleted' });
   }
 }

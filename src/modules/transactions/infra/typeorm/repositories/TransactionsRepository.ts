@@ -146,6 +146,10 @@ class TransactionsRepository implements ITransactionsRepository {
 
     return createdTransaction;
   }
+
+  public async delete(id: string): Promise<void> {
+    await this.ormRepository.delete({ id });
+  }
 }
 
 export default TransactionsRepository;
