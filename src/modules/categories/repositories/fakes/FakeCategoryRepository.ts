@@ -1,4 +1,3 @@
-import { uuid } from 'uuidv4';
 import Category from '@modules/categories/infra/typeorm/entities/Category';
 
 import ICategoryRepository from '@modules/categories/repositories/ICategoryRepository';
@@ -12,7 +11,7 @@ class CategoriesRepository implements ICategoryRepository {
   public async create(categoryTitle: string): Promise<Category> {
     const category = new Category();
 
-    Object.assign(category, { id: uuid(), title: categoryTitle });
+    Object.assign(category, { id: '1234567890', title: categoryTitle });
 
     this.categories.push(category);
 
@@ -39,12 +38,13 @@ class CategoriesRepository implements ICategoryRepository {
     return this.categories;
   }
 
-  public async delete(category_id: string): Promise<void> {
-    const filteredIds = this.transactions.findIndex(
-      transaction => transaction.category_id === category_id,
+  public async delete(category_id: string): Promise<void | Category[]> {
+    const filteredIds = this.categories.findIndex(
+      category => category.id === category_id,
     );
 
-    this.transactions.splice(filteredIds, 1);
+    this.categories.splice(filteredIds, 1);
+    return this.categories;
   }
 }
 

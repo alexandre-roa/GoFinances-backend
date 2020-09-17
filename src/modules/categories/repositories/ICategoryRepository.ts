@@ -5,5 +5,5 @@ export default interface ICategoryRepository {
   findId(category_id: string | undefined): Promise<Category | undefined>;
   findOne(categoryTitle: string): Promise<Category | undefined>;
   find(): Promise<Category[] | undefined>;
-  delete(category_id: string): Promise<void>;
+  delete(category_id: string): Promise<void | Category[]>;
 }
