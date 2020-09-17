@@ -3,7 +3,7 @@ import DeleteCategoryService from '@modules/categories/services/DeleteCategorySe
 import CreateCategoryService from '@modules/categories/services/CreateCategoryService';
 import FakeCategoryRepository from '../repositories/fakes/FakeCategoryRepository';
 
-describe('CreateCategory', () => {
+describe('DeleteCategory', () => {
   it('Should be able to delete category', async () => {
     const fakeCategoryRepository = new FakeCategoryRepository();
     const deleteCategoryService = new DeleteCategoryService(
